@@ -14,7 +14,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body style={{ margin: 0, padding: 0 }}>
+      <body style={{
+        margin: 0,
+        padding: 0,
+        minHeight: '100vh',
+        backgroundImage: 'url(/assets/background.png)',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center',
+      }}>
         <Toaster position="top-right" />
         <ClientLayout>{children}</ClientLayout>
       </body>

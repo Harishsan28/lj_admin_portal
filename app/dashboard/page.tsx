@@ -180,13 +180,15 @@ export default function Dashboard() {
               <XAxis dataKey="month" />
               <YAxis />
               <Tooltip />
-              <Line type="monotone" dataKey="sales" stroke="#1976d2" strokeWidth={3} activeDot={{ r: 8 }} onClick={(_, idx) => alert(`Month: ${salesTrend[idx].month}, Sales: ₹${salesTrend[idx].sales}`)} />
+              <Line type="monotone" dataKey="sales" stroke="#1976d2" strokeWidth={3} 
+                activeDot={{ r: 8, onClick: (e: any) => { if (e && e.payload) { alert(`Month: ${e.payload.month}, Sales: ₹${e.payload.sales}`); } } }}
+              />
             </LineChart>
           </ResponsiveContainer>
         </AdminCard>
         <AdminCard title="Users vs Products (Area Chart)">
           <ResponsiveContainer width="100%" height={220}>
-            <AreaChart data={areaData} onClick={(_, idx) => alert(`Month: ${areaData[idx]?.month}`)}>
+            <AreaChart data={areaData}>
               <XAxis dataKey="month" />
               <YAxis />
               <Tooltip />

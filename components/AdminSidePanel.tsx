@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { LogoLJ } from './AdminCard';
 
 const menuItems = [
-  { label: 'Dashboard', path: '/dashboard', icon: '🏠', roles: ['admin', 'user', 'manager', 'staff'] },
-  { label: 'Manage Users', path: '/manage-users', icon: '👤', roles: ['admin'] },
-  { label: 'Manage Products', path: '/manage-products', icon: '📦', roles: ['admin'] },
-  { label: 'Manage Orders', path: '/manage-orders', icon: '📝', roles: ['admin'] },
-  { label: 'Payments & Transactions', path: '/payments-transactions', icon: '💳', roles: ['admin'] },
-  { label: 'Invoice Generation', path: '/invoice-generation', icon: '🧾', roles: ['admin'] },
-  { label: 'Order Slip / Shipping Label Generation', path: '/order-slip-shipping-label', icon: '🚚', roles: ['admin'] },
-  { label: 'Reports', path: '/reports', icon: '📊', roles: ['admin'] },
-  { label: 'Customer Details', path: '/customer-details', icon: '🧑‍💼', roles: ['admin'] },
-  { label: 'Logout', path: '/logout', icon: '🚪', roles: ['admin', 'user', 'manager', 'staff'] },
+  { label: 'Dashboard', path: '/dashboard', icon: '🏠', permissionKey: 'dashboard' },
+  { label: 'Manage Users', path: '/manage-users', icon: '👤', permissionKey: 'manageUsers' },
+  { label: 'Manage Products', path: '/manage-products', icon: '📦', permissionKey: 'manageProducts' },
+  { label: 'Manage Orders', path: '/manage-orders', icon: '📝', permissionKey: 'manageOrders' },
+  { label: 'Payments & Transactions', path: '/payments-transactions', icon: '💳', permissionKey: 'payments' },
+  { label: 'Invoice Generation', path: '/invoice-generation', icon: '🧾', permissionKey: 'invoice' },
+  { label: 'Order Slip / Shipping Label Generation', path: '/order-slip-shipping-label', icon: '🚚', permissionKey: 'shipping' },
+  { label: 'Reports', path: '/reports', icon: '📊', permissionKey: 'reports' },
+  { label: 'Customer Details', path: '/customer-details', icon: '🧑‍💼', permissionKey: 'customerDetails' },
+  { label: 'Logout', path: '/logout', icon: '🚪' },
 ];
 
 function getUserRole() {
@@ -25,15 +26,37 @@ function getUserAccess() {
   return localStorage.getItem('userAccess') || 'partial';
 }
 
+function getUserId() {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem('userId');
+}
+
 export default function AdminSidePanel() {
   const pathname = usePathname();
   const userRole = typeof window !== 'undefined' ? getUserRole() : null;
   const userAccess = typeof window !== 'undefined' ? getUserAccess() : null;
-
-  // Show all menus if full access, else only Dashboard and Logout
-  const filteredMenuItems = userAccess === 'full'
+  // Only show menu items for which the user has permission (from localStorage)
+  const [userPermissions, setUserPermissions] = useState<Record<string, boolean>>({});
+  useEffect(() => {
+    const userId = getUserId();
+    if (userId) {
+      fetch(`/api/users?id=${userId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data) && data.length > 0 && data[0].permissions) {
+            setUserPermissions(data[0].permissions);
+          } else if (data && data.permissions) {
+            setUserPermissions(data.permissions);
+          }
+        })
+        .catch(() => {});
+    }
+  }, []);
+  const filteredMenuItems = Object.keys(userPermissions).length === 0
     ? menuItems
-    : menuItems.filter(item => ['Dashboard', 'Logout'].includes(item.label));
+    : menuItems.filter(
+        item => !item.permissionKey || userPermissions[item.permissionKey] || item.path === '/logout'
+      );
 
   const [isClient, setIsClient] = useState(false);
   useEffect(() => { setIsClient(true); }, []);
@@ -54,7 +77,10 @@ export default function AdminSidePanel() {
       flexDirection: 'column',
       zIndex: 1000
     }}>
-      <h2 style={{ marginBottom: '2rem', fontWeight: 800, fontSize: 24, letterSpacing: 1, color: '#fff' }}>Admin Panel</h2>
+      {/* Replace text with logo */}
+      <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
+        <LogoLJ size={40} />
+      </div>
       <nav style={{ flex: 1 }}>
         <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
           {filteredMenuItems

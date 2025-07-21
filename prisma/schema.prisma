@@ -20,6 +20,7 @@ model User {
   email        String   @unique
   role         Role     @default(user)
   access       Access   @default(full)
+  permissions  Json?
   created_at   DateTime @default(now())
 }
 

@@ -10,13 +10,15 @@ export async function GET() {
 
 export async function PATCH(req: NextRequest) {
   try {
-    const { id, role, access } = await req.json();
+    const { id, role, access, permissions } = await req.json();
     if (!id || !role || !access) {
       return NextResponse.json({ success: false, message: 'All fields are required.' }, { status: 400 });
     }
+    const updateData: any = { role, access };
+    if (permissions !== undefined) updateData.permissions = permissions;
     const user = await prisma.user.update({
       where: { id: Number(id) },
-      data: { role, access },
+      data: updateData,
     });
     return NextResponse.json({ success: true, user });
   } catch (err) {

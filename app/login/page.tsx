@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import gradientBackground from '../../styles/gradientTheme';
 import { API_URLS } from '../../network/apiUrls';
+import { LogoLJ } from '../../components/AdminCard';
 
 export default function AdminLogin() {
   const [username, setUsername] = useState('');
@@ -50,6 +51,9 @@ export default function AdminLogin() {
       if (data.success) {
         localStorage.setItem('userRole', data.user.role);
         localStorage.setItem('userAccess', data.user.access);
+        if (data.user.permissions) {
+          localStorage.setItem('userPermissions', JSON.stringify(data.user.permissions));
+        }
         router.push('/dashboard');
       } else {
         alert('Invalid credentials');
@@ -67,21 +71,40 @@ export default function AdminLogin() {
 
   return (
     <div style={{ ...gradientBackground, minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div style={{ background: '#fff', borderRadius: 18, boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.13)', padding: '3rem 2.5rem', maxWidth: 400, width: '100%', textAlign: 'center' }}>
-        {/* Sample SVG Logo */}
-        <div style={{ marginBottom: 32 }}>
-          <div style={{ width: 72, height: 72, borderRadius: '50%', background: 'rgba(25,118,210,0.08)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="24" cy="24" r="22" stroke="#1976d2" strokeWidth="4" fill="#1976d2" />
-              <path d="M24 14L32 34H16L24 14Z" fill="#fff" />
-            </svg>
+      <div style={{
+        display: 'flex',
+        background: 'rgba(255,255,255,0.95)',
+        borderRadius: 18,
+        boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.13)',
+        maxWidth: 900,
+        width: '100%',
+        minHeight: 480,
+        overflow: 'hidden',
+        flexDirection: 'row',
+      }}>
+        {/* Left Side: Logo and Welcome Note */}
+        <div style={{
+          flex: 1,
+          background: '#fff',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '2.5rem 1.5rem',
+          color: '#111',
+        }}>
+          
+          <div style={{ marginBottom: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+            <LogoLJ size={48} />
           </div>
+          <h1 style={{ fontSize: 32, fontWeight: 800, marginBottom: 12, letterSpacing: 1, color: '#111', textAlign: 'center' }}>Welcome Back!</h1>
+          <p style={{ fontSize: 18, color: '#222', marginBottom: 0, maxWidth: 300, textAlign: 'center' }}>
+            Manage your business operations efficiently and securely. Access your dashboard, users, products, and more from one place.
+          </p>
         </div>
-        <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 10, letterSpacing: 1, color: '#1976d2' }}>Welcome Back!</h1>
-        <p style={{ fontSize: 16, color: '#555', marginBottom: 28 }}>
-          Manage your business operations efficiently and securely. Access your dashboard, users, products, and more from one place.
-        </p>
-        <form onSubmit={handleSubmit} style={{ width: '100%', textAlign: 'left' }} autoComplete="on">
+        {/* Right Side: Login Form */}
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2.5rem 1.5rem' }}>
+          <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 350, textAlign: 'left' }} autoComplete="on">
           <div style={{ marginBottom: 20, position: 'relative', width: '100%' }}>
             <label htmlFor="username" style={{ display: 'block', color: '#333', fontWeight: 500, marginBottom: 6 }}>Email or Username</label>
             <input
@@ -139,9 +162,22 @@ export default function AdminLogin() {
             Create Account
           </button>
         </form>
-        <div style={{ fontSize: 15, color: '#888', marginTop: 24 }}>
-          &copy; {new Date().getFullYear()} Your Company Name
         </div>
+      </div>
+      {/* Footer at the bottom center */}
+      <div style={{
+        position: 'fixed',
+        left: 0,
+        bottom: 0,
+        width: '100vw',
+        textAlign: 'center',
+        fontSize: 15,
+        color: '#888',
+        padding: '16px 0',
+        background: 'transparent',
+        zIndex: 10,
+      }}>
+        &copy; {new Date().getFullYear()} Your Company Name
       </div>
     </div>
   );
