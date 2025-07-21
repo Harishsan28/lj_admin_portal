@@ -40,7 +40,10 @@ export default function ManageOrders() {
                   <td style={{ padding: '0.5rem' }}>{order.customer}</td>
                   <td style={{ padding: '0.5rem' }}>{order.status}</td>
                   <td style={{ padding: '0.5rem' }}>
-                    <button style={{ padding: '0.25rem 0.75rem', background: '#0070f3', color: '#fff', border: 'none', borderRadius: 4 }}>
+                    <button
+                      style={{ padding: '0.25rem 0.75rem', background: '#0070f3', color: '#fff', border: 'none', borderRadius: 4 }}
+                      onClick={() => router.push(`/manage-orders/${order.id}`)}
+                    >
                       View Details
                     </button>
                   </td>

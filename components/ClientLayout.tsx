@@ -3,6 +3,7 @@ import React from 'react';
 import AdminSidePanel from './AdminSidePanel';
 import { usePathname } from 'next/navigation';
 import gradientBackground from '../styles/gradientTheme';
+import { LogoLJ } from './AdminCard';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -26,7 +27,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           zIndex: 900,
           boxShadow: '0 2px 8px rgba(25, 118, 210, 0.04)'
         }}>
-          <span style={{ fontWeight: 700, fontSize: 18, color: '#1976d2', letterSpacing: 1 }}>Admin Portal</span>
+          {/* Replace text with logo */}
+          <span style={{ fontWeight: 700, fontSize: 18, color: '#1976d2', letterSpacing: 1 }}><LogoLJ size={32} /></span>
           <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 18 }}>
             {/* Placeholder for user info, notifications, etc. */}
             <span style={{ color: '#888', fontSize: 15 }}>Welcome, Admin</span>

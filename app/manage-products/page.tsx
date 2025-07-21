@@ -114,17 +114,21 @@ export default function ManageProducts() {
                     <td style={{ padding: '0.5rem' }}>{product.stock}</td>
                     <td style={{ padding: '0.5rem' }}>
                       <button
-                        style={{ padding: '4px 10px', background: '#ffa726', color: '#fff', border: 'none', borderRadius: 4, fontSize: 14, cursor: 'pointer', marginRight: 8 }}
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', marginRight: 8, padding: 4 }}
+                        title="Edit"
                         onClick={() => router.push(`/manage-products/edit/${product.id}`)}
                       >
-                        Edit
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffa726" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
                       </button>
                       <button
-                        style={{ padding: '4px 10px', background: '#e53935', color: '#fff', border: 'none', borderRadius: 4, fontSize: 14, cursor: deletingId === product.id ? 'not-allowed' : 'pointer', opacity: deletingId === product.id ? 0.7 : 1 }}
+                        style={{ background: 'none', border: 'none', cursor: deletingId === product.id ? 'not-allowed' : 'pointer', opacity: deletingId === product.id ? 0.7 : 1, padding: 4 }}
+                        title="Delete"
                         disabled={deletingId === product.id}
                         onClick={() => handleDelete(product.id)}
                       >
-                        {deletingId === product.id ? 'Deleting...' : 'Delete'}
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M6 7V15C6 15.55 6.45 16 7 16H13C13.55 16 14 15.55 14 15V7M9 10V13M11 10V13M4 7H16M8 4H12C12.55 4 13 4.45 13 5V6H7V5C7 4.45 7.45 4 8 4Z" stroke="#e53935" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
                       </button>
                     </td>
                   </tr>
