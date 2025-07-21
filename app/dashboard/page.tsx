@@ -112,7 +112,7 @@ export default function Dashboard() {
             <PieChart>
               <Pie
                 data={orderStatusData}
-                dataKey="value"
+                dataKey="value" 
                 nameKey="name"
                 cx="50%"
                 cy="50%"
