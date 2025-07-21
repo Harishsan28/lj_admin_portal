@@ -47,7 +47,7 @@ export function LogoLJ({ size = 32 }: { size?: number }) {
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
-        width: circleSize,
+        width: circleSize,  
         height: circleSize,
         borderRadius: '50%',
         background: 'linear-gradient(120deg, #1976d2 0%, #56ccf2 100%)',
