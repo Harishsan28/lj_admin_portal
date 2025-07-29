@@ -31,6 +31,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          path: lj_admin_portal 
       - name: Detect package manager
         id: detect-package-manager
         run: |
@@ -51,8 +53,9 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: ${{ steps.detect-package-manager.outputs.manager }}
+                node-version: '18'
+                cache: 'npm'
+                cache-dependency-path: 'lj_admin_portal/package-lock.json' # Or yarn.lock
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
