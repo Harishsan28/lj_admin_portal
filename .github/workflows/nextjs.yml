@@ -31,12 +31,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          path: lj_admin_portal 
       - name: Detect package manager
         id: detect-package-manager
         run: |
-          cd lj_admin_portal
           if [ -f "yarn.lock" ]; then
             echo "manager=yarn" >> $GITHUB_OUTPUT
             echo "command=install" >> $GITHUB_OUTPUT
@@ -68,24 +65,20 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            lj_admin_portal/.next/cache
+            .next/cache
           # Generate a new cache whenever packages or source files change.
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('lj_admin_portal/package-lock.json') }}-${{ hashFiles('lj_admin_portal/**.[jt]s', 'lj_admin_portal/**.[jt]sx') }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
           # If source files changed but packages didn't, rebuild from a prior cache.
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('lj_admin_portal/package-lock.json') }}-
+            ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-
       - name: Install dependencies
-        run: |
-          cd lj_admin_portal
-          ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Build with Next.js
-        run: |
-          cd lj_admin_portal
-          ${{ steps.detect-package-manager.outputs.runner }} next build
+        run: ${{ steps.detect-package-manager.outputs.runner }} next build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./lj_admin_portal/out
+          path: ./out
 
   # Deployment job
   deploy:
